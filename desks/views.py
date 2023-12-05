@@ -1,16 +1,24 @@
 from django.core.exceptions import ValidationError
 from rest_framework import status
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from cards.serializers import CardSerializer
 from desks.models import Desk
 from desks.serializers import DeskSerializer, DeskCardDetailsSerializer
+from .services import slip_card_front_or_back
 
 
 # Create your views here.
 
 class DeskCardView(APIView):
+
+    def get(self, request: Request):
+        q_parrams = dict(request.GET.items())
+        result = slip_card_front_or_back(q_parrams)
+        return Response(data=result)
+
     def post(self, request):
         deck_serializer = DeskSerializer(data=request.data)
         deck_serializer.is_valid(raise_exception=True)

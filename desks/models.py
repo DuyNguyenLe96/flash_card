@@ -7,7 +7,7 @@ from django.db import models
 
 # Create your models here.
 def wrapper(instance, filename, target):
-    ext = filename.split(".")[-1].lower()
+    ext = filename.split(".")[-1]
     if ext not in ["jpg", "png", "jpeg"]:
         raise ValidationError(f"invalid image extension: {filename}")
     filename = f"{instance.name.replace(' ', '_')}.{ext}"
